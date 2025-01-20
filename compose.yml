@@ -10,7 +10,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
     ports:
-      - "4000:4000"
+      - "5000:5000"
     labels:
       - "traefik.http.routers.habit-tracker-backend.rule=(Host(`habit-tracker.navong.xyz`) && PathPrefix(`/api`))"
     networks:
