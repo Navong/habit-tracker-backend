@@ -3,7 +3,7 @@ version: "3.9"
 services:
   habit-tracker-backend:
     container_name: habit-tracker-backend
-    image: nolandev1/habit-tracker-backend
+    image: navong/habit-tracker-backend
     build:
       context: .
       dockerfile: Dockerfile
