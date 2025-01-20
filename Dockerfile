@@ -1,5 +1,3 @@
-#!/bin/bash
-
 FROM avepha/raspberry-pi-node-20
 
 WORKDIR /app
