@@ -1,122 +1,198 @@
 # Habit Tracker API
 
-This API allows users to manage journal entries and habit tracking using Node.js and Prisma.
+A robust REST API for managing personal journal entries and habit tracking, built with Node.js and Prisma.
 
 ## Features
-- CRUD operations for journal entries
-- CRUD operations for habits
-- Toggle habit completion
-- Save reflections on journal entries
 
-## Technologies Used
-- Node.js
-- Express
-- Prisma
-- SQLite (default database, can be replaced with PostgreSQL, MySQL, etc.)
+- **Journal Management**
+  - Create, read, update, and delete journal entries
+  - Add personal reflections to entries
+  - Track mood and emotions
 
-## Installation
+- **Habit Tracking**
+  - Create and manage personal habits
+  - Track daily/weekly progress
+  - Categorize habits with custom colors
+  - Set and monitor habit goals
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/journal-habit-api.git
-   cd journal-habit-api
-   ```
+## Tech Stack
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+- **Backend**: Node.js, Express
+- **ORM**: Prisma
+- **Database**: SQLite (default, supports PostgreSQL, MySQL)
 
-3. Set up the environment variables:
-   Create a `.env` file and add the following:
-   ```env
-   DATABASE_URL="file:./dev.db"
-   ```
+## Getting Started
 
-4. Run database migrations:
-   ```bash
-   npx prisma migrate dev --name init
-   ```
+### Prerequisites
 
-5. Start the server:
-   ```bash
-   npm start
-   ```
+- Node.js (v14 or higher)
+- npm or yarn
 
-## API Endpoints
+### Installation
 
-### Journal Entry Routes
+1. Clone the repository
+```bash
+git clone https://github.com/your-repo/journal-habit-api.git
+cd journal-habit-api
+```
 
-- **Get all journal entries**  
-  `GET /api/journal`  
-  _Response:_
-  ```json
-  [
-    { "id": "1", "date": "2025-01-20", "content": "Today was great", "mood": "good" }
-  ]
-  ```
+2. Install dependencies
+```bash
+npm install
+```
 
-- **Add a new journal entry**  
-  `POST /api/journal`  
-  _Body:_
-  ```json
-  { "date": "2025-01-20", "content": "Today was productive", "mood": "great" }
-  ```
+3. Configure environment variables
+```bash
+# Create .env file in project root
+DATABASE_URL="file:./dev.db"
+```
 
-- **Update a journal entry**  
-  `PUT /api/journal/:id`  
-  _Body:_
-  ```json
-  { "content": "Updated content", "mood": "neutral" }
-  ```
+4. Initialize database
+```bash
+npx prisma migrate dev --name init
+```
 
-- **Delete a journal entry**  
-  `DELETE /api/journal/:id`
+5. Start the server
+```bash
+npm start
+```
 
-- **Save journal reflection**  
-  `PUT /api/journal/:id/reflection`  
-  _Body:_
-  ```json
-  { "savedReflection": "Learned a lot today!" }
-  ```
+## API Documentation
 
-### Habit Routes
+### Journal Endpoints
 
-- **Get all habits**  
-  `GET /api/habits`  
+#### Get Journal Entries
+```http
+GET /api/journal
+```
 
-- **Add a new habit**  
-  `POST /api/habits`  
-  _Body:_
-  ```json
-  { "name": "Exercise", "description": "Morning workout", "goal": 30, "frequency": "daily", "color": "blue", "category": "health" }
-  ```
+Response:
+```json
+[
+  {
+    "id": "1",
+    "date": "2025-01-20",
+    "content": "Today was great",
+    "mood": "good"
+  }
+]
+```
 
-- **Toggle habit completion**  
-  `PUT /api/habits/:id/toggle`  
-  _Body:_
-  ```json
-  { "date": "2025-01-20" }
-  ```
+#### Create Journal Entry
+```http
+POST /api/journal
+```
 
-- **Delete a habit**  
-  `DELETE /api/habits/:id`
+Request Body:
+```json
+{
+  "date": "2025-01-20",
+  "content": "Today was productive",
+  "mood": "great"
+}
+```
 
-- **Update a habit**  
-  `PUT /api/habits/:id`  
-  _Body:_
-  ```json
-  { "goal": 60 }
-  ```
+#### Update Journal Entry
+```http
+PUT /api/journal/:id
+```
+
+Request Body:
+```json
+{
+  "content": "Updated content",
+  "mood": "neutral"
+}
+```
+
+#### Add Reflection
+```http
+PUT /api/journal/:id/reflection
+```
+
+Request Body:
+```json
+{
+  "savedReflection": "Learned a lot today!"
+}
+```
+
+#### Delete Journal Entry
+```http
+DELETE /api/journal/:id
+```
+
+### Habit Endpoints
+
+#### Get All Habits
+```http
+GET /api/habits
+```
+
+#### Create Habit
+```http
+POST /api/habits
+```
+
+Request Body:
+```json
+{
+  "name": "Exercise",
+  "description": "Morning workout",
+  "goal": 30,
+  "frequency": "daily",
+  "color": "blue",
+  "category": "health"
+}
+```
+
+#### Toggle Habit Completion
+```http
+PUT /api/habits/:id/toggle
+```
+
+Request Body:
+```json
+{
+  "date": "2025-01-20"
+}
+```
+
+#### Update Habit
+```http
+PUT /api/habits/:id
+```
+
+Request Body:
+```json
+{
+  "goal": 60
+}
+```
+
+#### Delete Habit
+```http
+DELETE /api/habits/:id
+```
 
 ## Error Handling
-The API returns appropriate HTTP status codes and error messages in the following format:
+
+The API implements standard HTTP status codes and returns error messages in the following format:
+
 ```json
 {
   "error": "Description of the error"
 }
 ```
 
-## License
-This project is licensed under the MIT License.
+## Contributing
 
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+For support, please open an issue in the GitHub repository.
