@@ -21,10 +21,9 @@ model Habit {
 }
 
 model JournalEntry {
-  id              String   @id @default(uuid())
+  id              String  @id @default(uuid())
   date            String
   content         String
   mood            String?
-  savedReflection String?  // New field to store reflections
+  savedReflection String?
 }
-
