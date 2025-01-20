@@ -10,7 +10,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
     labels:
-      - "traefik.http.routers.habit-tracker-backend.rule=(Host(`harbit-tracker.navong.xyz`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.habit-tracker-backend.rule=(Host(`habit-tracker.navong.xyz`) && PathPrefix(`/api`))"
     networks:
       - traefik-network
     restart: unless-stopped
