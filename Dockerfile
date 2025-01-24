@@ -1,7 +1,7 @@
 FROM node:18
 
 # Install Node.js and npm
-RUN apk add --no-cache nodejs npm
+# RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
 
