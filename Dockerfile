@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20
 
 # Install Node.js and npm
 # RUN apk add --no-cache nodejs npm
