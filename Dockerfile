@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM node:18
 
 # Install Node.js and npm
 RUN apk add --no-cache nodejs npm
