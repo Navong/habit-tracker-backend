@@ -39,11 +39,10 @@ jobs:
       - name: Clone Git repository on Raspberry Pi
         run: |
           sshpass -p "${{ secrets.RASPBERRY_PI_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.RASPBERRY_PI_USER }}@${{ secrets.RASPBERRY_PI_HOST }} "
-            if [ ! -d '/home/dev/backend/habit-tracker-backend' ]; then
-              git clone https://github.com/Navong/habit-tracker-backend.git /home/dev/backend/habit-tracker-backend;
-            else
-              cd /home/dev/backend/habit-tracker-backend && git pull;
+            if [ -d '/home/dev/backend/habit-tracker-backend' ]; then
+              rm -rf /home/dev/backend/habit-tracker-backend;
             fi
+            git clone https://github.com/Navong/habit-tracker-backend.git /home/dev/backend/habit-tracker-backend;
           "
 
       - name: Create .env.local on Raspberry Pi
