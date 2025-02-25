@@ -5,9 +5,9 @@
       "version": "1.0.0",
       "description": "API documentation for the Habit & Journal Tracker"
     },
-    "host": "localhost:4001",
+    "host": "habit-back.navong.cloud",
     "basePath": "/",
-    "schemes": ["http"],
+    "schemes": ["https"],
     "paths": {
       "/api/journals": {
         "get": {
