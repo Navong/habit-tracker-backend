@@ -1,20 +1,14 @@
-# version: "3.9"
+version: '3.8'
 
 services:
-  habit-tracker-backend:
-    container_name: habit-tracker-backend
-    image: navong/habit-tracker-backend
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    build: .
+    container_name: habit-backend
+    ports:
+      - "4003:4000"
     environment:
-      DATABASE_URL: ${DATABASE_URL}
-    labels:
-      - "traefik.http.routers.habit-tracker-backend.rule=(Host(`habit-backend.navong.xyz`) && PathPrefix(`/api`))"
-    networks:
-      - traefik-network
-    restart: unless-stopped
-
-networks:
-  traefik-network:
-    external: true
+      DATABASE_URL: "${DATABASE_URL}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npm", "start"]
