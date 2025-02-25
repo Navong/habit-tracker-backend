@@ -10,7 +10,7 @@ const habitRoutes = require("./routes/habitRoutes");
 
 const prisma = new PrismaClient();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors());
