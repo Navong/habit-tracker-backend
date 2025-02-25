@@ -1,0 +1,103 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Habit & Journal Tracker API",
+      "version": "1.0.0",
+      "description": "API for managing journal entries and habits"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:4003"
+      }
+    ],
+    "paths": {
+      "/api/journals": {
+        "get": {
+          "summary": "Retrieve all journal entries",
+          "responses": {
+            "200": {
+              "description": "A list of journal entries"
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new journal entry",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "mood": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Journal entry created"
+            }
+          }
+        }
+      },
+      "/api/habits": {
+        "get": {
+          "summary": "Retrieve all habits",
+          "responses": {
+            "200": {
+              "description": "A list of habits"
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new habit",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "goal": {
+                      "type": "string"
+                    },
+                    "frequency": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Habit created"
+            }
+          }
+        }
+      }
+    }
+  }
+  
