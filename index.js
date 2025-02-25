@@ -1,143 +1,139 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-const { PrismaClient } = require("@prisma/client");
+const { createClient } = require("@supabase/supabase-js");
+require("dotenv").config();
 
-const prisma = new PrismaClient();
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./docs/swagger.json");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Initialize Supabase
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 // Middleware
-//cors
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-  
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
 app.use(express.json());
+
+// Swagger Docs Route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Journal Routes
 app.get("/api/journals", async (req, res) => {
-    try {
-        const entries = await prisma.journalEntry.findMany();
-        res.json(entries);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching journal entries" });
-    }
+    const { data, error } = await supabase.from("journal_entries").select("*");
+    if (error)
+        return res.status(500).json({ error: "Error fetching journal entries" });
+    res.json(data);
 });
 
 app.post("/api/journals", async (req, res) => {
     const { date, content, mood } = req.body;
-    try {
-        const newEntry = await prisma.journalEntry.create({
-            data: { date: new Date(date), content, mood },
-        });
-        res.status(201).json(newEntry);
-    } catch (error) {
-        res.status(500).json({ error: "Error adding journal entry" });
-    }
+    const { data, error } = await supabase
+        .from("journal_entries")
+        .insert([{ date, content, mood }]);
+    if (error)
+        return res.status(500).json({ error: "Error adding journal entry" });
+    res.status(201).json(data);
 });
 
 app.put("/api/journals/:id", async (req, res) => {
     const { id } = req.params;
-    const data = req.body;
-    try {
-        const updatedEntry = await prisma.journalEntry.update({ where: { id }, data });
-        res.json(updatedEntry);
-    } catch (error) {
-        res.status(500).json({ error: "Error updating journal entry" });
-    }
+    const { data, error } = await supabase
+        .from("journal_entries")
+        .update(req.body)
+        .eq("id", id);
+    if (error)
+        return res.status(500).json({ error: "Error updating journal entry" });
+    res.json(data);
 });
 
 app.delete("/api/journals/:id", async (req, res) => {
     const { id } = req.params;
-    try {
-        await prisma.journalEntry.delete({ where: { id } });
-        res.json({ message: "Journal entry deleted" });
-    } catch (error) {
-        res.status(500).json({ error: "Error deleting journal entry" });
-    }
+    const { error } = await supabase
+        .from("journal_entries")
+        .delete()
+        .eq("id", id);
+    if (error)
+        return res.status(500).json({ error: "Error deleting journal entry" });
+    res.json({ message: "Journal entry deleted" });
 });
 
 // Habit Routes
 app.get("/api/habits", async (req, res) => {
-    try {
-        const habits = await prisma.habit.findMany();
-        res.json(habits);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching habits" });
-    }
+    const { data, error } = await supabase.from("habits").select("*");
+    console.log(data);
+    if (error) return res.status(500).json({ error: "Error fetching habits" });
+    res.json(data);
 });
 
 app.post("/api/habits", async (req, res) => {
-    const { name, description, goal, frequency, color, category } = req.body;
-    try {
-        const newHabit = await prisma.habit.create({
-            data: { name, description, goal, frequency, color, category, completedDates: [] },
-        });
-        res.status(201).json(newHabit);
-    } catch (error) {
-        res.status(500).json({ error: "Error adding habit" });
-    }
+    const { name, description, goal, frequency, color, category, completed_dates } = req.body;
+
+    console.log(req.body)
+
+    const { data, error } = await supabase
+        .from("habits")
+        .insert([{ name, description, goal, frequency, color, category, completed_dates }]);
+    if (error) return res.status(500).json({ error });
+    console.log(error)
+    res.status(201).json(data);
 });
 
 app.put("/api/habits/:id", async (req, res) => {
     const { id } = req.params;
-    const data = req.body;
-    try {
-        const updatedHabit = await prisma.habit.update({ where: { id }, data });
-        res.json(updatedHabit);
-    } catch (error) {
-        res.status(500).json({ error: "Error updating habit" });
-    }
+    const { data, error } = await supabase
+        .from("habits")
+        .update(req.body)
+        .eq("id", id);
+    if (error) return res.status(500).json({ error: "Error updating habit" });
+    res.json(data);
 });
 
 app.delete("/api/habits/:id", async (req, res) => {
     const { id } = req.params;
-    try {
-        await prisma.habit.delete({ where: { id } });
-        res.json({ message: "Habit deleted" });
-    } catch (error) {
-        res.status(500).json({ error: "Error deleting habit" });
-    }
+    const { error } = await supabase
+        .from("habits")
+        .delete()
+        .eq("id", id);
+    if (error) return res.status(500).json({ error: "Error deleting habit" });
+    res.json({ message: "Habit deleted" });
 });
 
 app.put("/api/habits/:id/toggle", async (req, res) => {
     const { id } = req.params;
     const { date } = req.body;
-  
-    try {
-      const habit = await prisma.habit.findUnique({
-        where: { id },
-      });
-  
-      if (!habit) {
+
+    const { data: habit, error } = await supabase
+        .from("habits")
+        .select("completed_dates")
+        .eq("id", id)
+        .single();
+    if (error || !habit)
         return res.status(404).json({ error: "Habit not found" });
-      }
-  
-      let updatedCompletedDates;
-  
-      // Check if the date is already in completedDates
-      if (habit.completedDates.includes(date)) {
-        updatedCompletedDates = habit.completedDates.filter((d) => d !== date);
-      } else {
-        updatedCompletedDates = [...habit.completedDates, date];
-      }
-  
-      const updatedHabit = await prisma.habit.update({
-        where: { id },
-        data: {
-          completedDates: updatedCompletedDates,
-        },
-      });
-  
-      res.json(updatedHabit);
-    } catch (error) {
-      console.error("Error toggling habit completion:", error);
-      res.status(500).json({ error: "Error toggling habit completion" });
-    } 
-})
+
+    let updatedCompletedDates = habit.completed_dates.includes(date)
+        ? habit.completed_dates.filter((d) => d !== date)
+        : [...habit.completed_dates, date];
+
+    const { error: updateError } = await supabase
+        .from("habits")
+        .update({ completed_dates: updatedCompletedDates })
+        .eq("id", id);
+    if (updateError)
+        return res.status(500).json({ error: "Error toggling habit completion" });
+
+    res.json({ message: "Habit completion toggled" });
+});
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Habit & Journal Tracker API");
