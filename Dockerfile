@@ -9,9 +9,9 @@ COPY package*.json ./
 
 RUN npm i
 
-COPY prisma ./prisma
+# COPY prisma ./prisma
 
-RUN npx prisma generate
+# RUN npx prisma generate
 
 COPY . .
 
