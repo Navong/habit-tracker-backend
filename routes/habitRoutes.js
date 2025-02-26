@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
         });
         res.status(201).json(newHabit);
     } catch (error) {
-        res.status(500).json({ error: "Error adding habit" });
+        res.status(500).json({ error });
     }
 });
 

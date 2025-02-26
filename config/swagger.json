@@ -8,6 +8,9 @@
     "servers": [
       {
         "url": "https://habit-back.navong.cloud"
+      },
+      {
+        "url": "http://localhost:4003"
       }
     ],
     "paths": {
