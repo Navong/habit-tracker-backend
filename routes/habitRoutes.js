@@ -74,6 +74,20 @@ router.put("/:id/toggle", async (req, res) => {
     }
 })
 
+router.put("/:id", async (req, res) => {
+    const { id } = req.params;
+    const { name, description, goal, frequency, color, category } = req.body;
+    try {
+        const updatedHabit = await prisma.habit.update({
+            where: { id },
+            data: { name, description, goal, frequency, color, category },
+        });
+        res.json(updatedHabit);
+    } catch (error) {
+        res.status(500).json({ error: "Error updating habit" });
+    }
+});
+
 router.delete("/api/habits/:id", async (req, res) => {
     const { id } = req.params;
     try {
