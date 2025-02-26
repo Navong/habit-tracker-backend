@@ -7,7 +7,7 @@
     },
     "servers": [
       {
-        "url": "http://localhost:4003"
+        "url": "https://habit-back.navong.cloud"
       }
     ],
     "paths": {
@@ -94,6 +94,52 @@
           "responses": {
             "201": {
               "description": "Habit created"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update a habit",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "goal": {
+                      "type": "string"
+                    },
+                    "frequency": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Habit updated"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete a habit",
+          "responses": {
+            "200": {
+              "description": "Habit deleted"
             }
           }
         }

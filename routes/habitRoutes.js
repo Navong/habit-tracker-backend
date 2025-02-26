@@ -25,4 +25,65 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.put("/:id", async (req, res) => {
+    const { id } = req.params;
+    const { name, description, goal, frequency, color, category } = req.body;
+    try {
+        const updatedHabit = await prisma.habit.update({
+            where: { id },
+            data: { name, description, goal, frequency, color, category },
+        });
+        res.json(updatedHabit);
+    } catch (error) {
+        res.status(500).json({ error: "Error updating habit" });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedHabit = await prisma.habit.delete({ where: { id } });
+        res.json(deletedHabit);
+    } catch (error) {
+        res.status(500).json({ error: "Error deleting habit" });
+    }
+});
+
+// Habit Routes
+
+router.put("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const editedHabit = await prisma.habit.update({
+            where: { id },
+            data: req.body
+        })
+        res.json(editedHabit);
+    } catch (error) {
+        res.status(500).json({ error: "Error updating habit" });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedHabit = await prisma.habit.delete({ where: { id } });
+        res.json(deletedHabit);
+    } catch (error) {
+        res.status(500).json({ error: "Error deleting habit" });
+    }
+});
+
+router.put("/:id/toggle", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const habit = await prisma.habit.findUnique({ where: { id }, select: { completedDates: true } });
+        res.json(habit);
+    } catch (error) {
+        console.error(error);
+        res.json({ error: "Error updating habit" });
+    }
+});
+
 module.exports = router;
