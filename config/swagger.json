@@ -11,45 +11,6 @@
       }
     ],
     "paths": {
-      "/api/journals": {
-        "get": {
-          "summary": "Retrieve all journal entries",
-          "responses": {
-            "200": {
-              "description": "A list of journal entries"
-            }
-          }
-        },
-        "post": {
-          "summary": "Create a new journal entry",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "date": {
-                      "type": "string"
-                    },
-                    "content": {
-                      "type": "string"
-                    },
-                    "mood": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Journal entry created"
-            }
-          }
-        }
-      },
       "/api/habits": {
         "get": {
           "summary": "Retrieve all habits",
